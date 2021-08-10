@@ -2,7 +2,7 @@ BINARY_NAME=dudzik.elf
 
 # Sorry, Nuvoton's driver compiles with warnings, so Wall is not here...
 CCFLAGS=-mcpu=cortex-m0 -march=armv6-m -mthumb -g -Werror -nostdlib -fdata-sections -ffunction-sections
-LDFLAGS=-mcpu=cortex-m0 -march=armv6-m -T M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/gcc_arm.ld -Wl,-nostdlib,--gc-sections,-lgcc,-lm,-Map=build/memory.map
+LDFLAGS=-mcpu=cortex-m0 -march=armv6-m -T M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/gcc_arm.ld -Wl,-nostdlib,-gc-sections,-lgcc,-lm,-Map=build/memory.map
 
 CC=arm-none-eabi-gcc
 AS=arm-none-eabi-gcc
