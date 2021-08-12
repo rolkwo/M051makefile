@@ -1,9 +1,8 @@
 BINARY_NAME=dudzik.elf
 
-# Sorry, Nuvoton's driver compiles with warnings, so Wall is not here...
-CCFLAGS=-mcpu=cortex-m0 -march=armv6-m -mthumb -g -Werror -nostdlib -fdata-sections -ffunction-sections
-LDFLAGS=-mcpu=cortex-m0 -march=armv6-m -T M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/gcc_arm.ld -Wl,-nostdlib,-gc-sections,-lgcc,-lm,-Map=build/memory.map
-
+# Sorry, Nuvoton's driver compiles with warnings, so Werror is not here...
+CCFLAGS=-mcpu=cortex-m0 -march=armv6-m -mthumb -g0 -Wall -nostdlib -fdata-sections -ffunction-sections
+LDFLAGS=-mcpu=cortex-m0 -march=armv6-m -T M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/gcc_arm.ld -Wl,--cref,-nostdlib,--gc-sections,-lgcc,-lm,-Map=build/memory.map
 CC=arm-none-eabi-gcc
 AS=arm-none-eabi-gcc
 LD=arm-none-eabi-gcc
@@ -24,14 +23,17 @@ all: dir $(BINARY_NAME)
 dir:
 	mkdir -p build
 
-$(BINARY_NAME): $(OBJECTS_DRV) build/system_M051Series.o build/startup_M051Series.o $(OBJECTS)
+$(BINARY_NAME): build/system_M051Series.o build/startup_M051Series.o $(OBJECTS) build/gpio.o
 	$(LD) $(LDFLAGS) $^ -o build/$@
 
 build/startup_M051Series.o: M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/startup_M051Series.S
-	$(AS) -c -D__SKIP_LIBC_INIT_ARRAY $< -o $@
+	$(AS) -c -D__STARTUP_CLEAR_BSS $< -o $@
 	
 build/system_M051Series.o: M051BSP/Library/Device/Nuvoton/M051Series/Source/system_M051Series.c
 	$(CC) -c $(CCFLAGS) $< $(INC_PARAMS) -o $@
+	
+#build/_syscalls.o: M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/_syscalls.c
+#	$(CC) -c $(CCFLAGS) $< $(INC_PARAMS) -o $@
 
 $(OBJECTS_DRV): build/%.o : M051BSP/Library/StdDriver/src/%.c
 	$(CC) -c $< $(CCFLAGS) $(INC_PARAMS) -o $@
