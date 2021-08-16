@@ -13,8 +13,26 @@ INC_PARAMS=$(foreach d, $(INCLUDES), -I$d)
 SOURCES=$(wildcard src/*.c )
 OBJECTS=$(patsubst src/%.c,build/%.o,$(SOURCES))
 
+
 SOURCES_DRV=$(wildcard M051BSP/Library/StdDriver/src/*.c )
-OBJECTS_DRV=$(patsubst M051BSP/Library/StdDriver/src/%.c,build/%.o,$(SOURCES_DRV))
+#OBJECTS_DRV=$(patsubst M051BSP/Library/StdDriver/src/%.c,build/%.o,$(SOURCES_DRV))
+OBJECTS_DRV=
+OBJECTS_DRV+=build/acmp.o
+OBJECTS_DRV+=build/adc.o
+OBJECTS_DRV+=build/clk.o
+OBJECTS_DRV+=build/ebi.o
+OBJECTS_DRV+=build/FMC.o
+OBJECTS_DRV+=build/gpio.o
+OBJECTS_DRV+=build/i2c.o
+OBJECTS_DRV+=build/pwm.o
+#OBJECTS_DRV+=build/retarget.o
+OBJECTS_DRV+=build/spi.o
+OBJECTS_DRV+=build/sys.o
+OBJECTS_DRV+=build/timer.o
+OBJECTS_DRV+=build/uart.o
+OBJECTS_DRV+=build/wdt.o
+OBJECTS_DRV+=build/wwdt.o
+
 
 all: dir $(BINARY_NAME)
 	@echo " "
@@ -23,7 +41,7 @@ all: dir $(BINARY_NAME)
 dir:
 	mkdir -p build
 
-$(BINARY_NAME): build/system_M051Series.o build/startup_M051Series.o $(OBJECTS) build/gpio.o
+$(BINARY_NAME): build/system_M051Series.o build/startup_M051Series.o $(OBJECTS) $(OBJECTS_DRV)
 	$(LD) $(LDFLAGS) $^ -o build/$@
 
 build/startup_M051Series.o: M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/startup_M051Series.S
