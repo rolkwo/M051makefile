@@ -44,9 +44,8 @@ set(CMAKE_C_FLAGS_DEBUG "-Og -g -gdwarf-3 -gstrict-dwarf")
 #set(CMAKE_EXE_LINKER_FLAGS "--entry ResetISR -Wl,-T\"../tm4c123gh6pm.lds\"")
 set(CMAKE_EXE_LINKER_FLAGS "-mcpu=cortex-m0 -march=armv6-m -T M051BSP/Library/Device/Nuvoton/M051Series/Source/GCC/gcc_arm.ld -Wl,--gc-sections,-Map=build/memory.map")
 
-
-
-#add_subdirectory(libs/hello)
-
 add_executable(${PROJECT_NAME}.elf ${SOURCES}) 
 #target_link_libraries(${PROJECT_NAME}.elf hello)
+
+add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
+    COMMAND arm-none-eabi-size --format=berkeley "build/${PROJECT_NAME}.elf")
