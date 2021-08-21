@@ -1,6 +1,7 @@
 #include "M051Series.h"
 
 #include "gpio.h"
+#include "uart.h"
 
 volatile uint32_t del;
 
@@ -12,6 +13,8 @@ int main(void)
 
   SysTick_Config(SystemCoreClock / 1000);
 
+  UART_Open(UART0, 115200);
+
   GPIO_SetMode(P3, 1 << 6, GPIO_PMD_OUTPUT);
 
   while(1)
@@ -20,6 +23,10 @@ int main(void)
     delay(100);
     P36 = 1;
     delay(900);
+
+    const uint8_t buf[] = "bla bla bla";
+
+    UART_Write(UART0, buf, sizeof(buf));
   }
 }
 

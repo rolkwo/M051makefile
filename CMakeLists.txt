@@ -12,6 +12,8 @@ set(CMAKE_CROSSCOMPILING 1)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "build")
 
 set(CMAKE_C_COMPILER arm-none-eabi-gcc CACHE PATH "" FORCE)
+set(CMAKE_CXX_COMPILER arm-none-eabi-g++ CACHE PATH "" FORCE)
+set(CMAKE_ASM_COMPILER arm-none-eabi-gcc CACHE PATH "" FORCE)
 
 include_directories(M051BSP/Library/Device/Nuvoton/M051Series/Include/ M051BSP/Library/StdDriver/inc/ M051BSP/Library/CMSIS/Include/ inc)
 
